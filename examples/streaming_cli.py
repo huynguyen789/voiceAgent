@@ -1,5 +1,6 @@
 import asyncio
 import os
+from datetime import datetime
 
 from pynput import keyboard
 from openai_realtime_client import RealtimeClient, AudioHandler, InputHandler, TurnDetectionMode
@@ -16,7 +17,14 @@ def get_phone_number(name: str) -> str:
     else:
         return "Unknown"
 
-tools = [FunctionTool.from_defaults(fn=get_phone_number)]
+def get_current_datetime() -> str:
+    """Get the current date and time."""
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+tools = [
+    FunctionTool.from_defaults(fn=get_phone_number),
+    FunctionTool.from_defaults(fn=get_current_datetime)
+]
 
 async def main():
     audio_handler = AudioHandler()
